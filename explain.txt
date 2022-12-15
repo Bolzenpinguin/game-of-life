@@ -1,0 +1,20 @@
+Das Bionikanimation "Life" wurde 1970 vom britischen Mathematiker J.H.
+Conway erfunden. Wir betrachten eine zweidimensionale Matrix mit n*m
+Elementen (Zellen) des Typs char. Enthaelt eine Zelle ein Leerzeichen,
+dann ist sie "tot". Es handelt sich um eine "lebende" Zelle, wenn in ihr ein
+"*" eingetragen ist. Mehrere benachbarte lebende Zellen bilden einen
+Organismus.
+
+Eine Zelle ist von 8 Nachbarzellen umgeben, wenn sie sich nicht gerade
+am Rand der Matrix befinden. Um die Gestalt eines Organismus in der
+nächsten Generation zu ermitteln, gelten folgende Regeln, die auf die
+gesamte Matrix anzuwenden sind:
+
+1. Besitzt eine lebende Zelle 0, 1 oder mehr als 3 lebende
+Nachbarzellen, stirbt sie an Vereinsamung oder Überbevoelkerung. 
+
+2. Besitzt eine lebende Zelle 2 oder 3 lebende Nachbarzellen, dann
+existiert sie in der naechsten Generation weiter.
+
+3. Ist eine tote Zelle von genau 3 lebenden Zellen umgeben, dann
+entsteht aus ihr eine neue lebende Zelle.
