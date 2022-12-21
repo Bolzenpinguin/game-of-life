@@ -18,24 +18,24 @@
 // Global Varibales
 int treader;
 int gamefile;
-int x;
-int y;
+int x; // fuer pfeiltastensteuerung
+int y; // fuer pfeiltastensteuerung
 int menu = 1;
 int levelNumber = 1;
 int generation = 5;
 int end = 1;
-int a;
+int key;
 int ausmenu = 0;
 FILE* level;
 char currentGen[ROWS][COLS];
 char nextGen[ROWS][COLS];
 int livingNeighbourCells;
-int schritt;
-char test;
+int schritt; // fuer schrittweisen ablauf wichtig
+char reading;
 FILE* explainFile;
 char textExplain;
 
-//declartion
+//declartion            
 void goToXY(int x, int y);
 int getKey();
 void rowBoundary();
@@ -48,14 +48,12 @@ int generations();
 int stepByStep();
 void start(int durchlaufe);
 
-
-
-//main
+//main 
 int main(int argc, const char* argv[]) {
 
     //laden des ersten Levels Standardmaessig
     if ((level = fopen("level1.txt", "r")) == NULL) {
-        printf("Datwi wurde veraendert oder geloescht.\nProgramm wird beendet!\n");
+        printf("Datei wurde veraendert oder geloescht.\nProgramm wird beendet!\n");
         exit(1);
     }
 
@@ -67,13 +65,13 @@ int main(int argc, const char* argv[]) {
             }
         }
         if (i != ROWS - 1)
-            fscanf(level, "%c", &test);
+            fscanf(level, "%c", &reading);
     }
     fclose(level);
 
     system("cls");
     do {
-        //Wenn der User aus einem Menü kommt, wird der Cursor auf die richtige Position gesetzt und das Menü ausgegeben
+        //Wenn der User aus einem MenÃ¼ kommt, wird der Cursor auf die richtige Position gesetzt und das Menue ausgegeben
 
         if (ausmenu != 1) {
             system("cls");
@@ -84,10 +82,10 @@ int main(int argc, const char* argv[]) {
         }
         ausmenu = 1;
 
-        //Die Eingabe des Users wird entgegengenommen daraufhin die entsprechende Methode ausgelöst
+        //Die Eingabe des Users wird entgegengenommen daraufhin die entsprechende Methode ausgelÃ¶st
 
-        a = getKey();
-        switch (a) {
+        key = getKey();
+        switch (key) {
 
             //Pfeiltaste unten
         case 592: {
@@ -111,6 +109,7 @@ int main(int argc, const char* argv[]) {
                 //Entertaste
         case 13:
 
+            // einzelne Menuepunkte
             switch (y) {
             case 5: {
                 start(generation);
@@ -144,7 +143,9 @@ int main(int argc, const char* argv[]) {
 }
 
 
-// Functions
+// Functions ==================================================================================================================================
+
+
 void goToXY(int x, int y) {
     HANDLE hConsoleOutput;
     COORD koords;
@@ -189,7 +190,7 @@ int countLivingCellsNeighbour(char a[ROWS][COLS], int r, int c) {
 }
 
 void menuLoadingScrean(int levelNumber, int generation) {
-    printf("=================\nGame of Live\n=================\n\n");
+    printf("=================\nGame of Life\n=================\n\n");
     switch (levelNumber) {
     case 1:
         printf("Aktueller Spielstand: Level 1\n");
@@ -277,10 +278,10 @@ int close() {
     return 1;
 }
 
-//Wechselt den Spielstand indem es Level auf 1, 2, 3 oder zufaellig setzt
+//Wechselt den Spielstand auf 1, 2, 3 oder zufaellig
 int change() {
     system("cls");
-    printf("Wähle deinen Spielstand aus:\n");
+    printf("Waehle deinen Spielstand aus:\n");
     printf("Level 1\n");
     printf("Level 2\n");
     printf("Level 3\n");
@@ -329,7 +330,7 @@ int change() {
                         }
                     }
                     if (i != ROWS - 1)
-                        fscanf(level, "%c", &test);
+                        fscanf(level, "%c", &reading);
                 }
                 fclose(level);
                 return 1;
@@ -347,7 +348,7 @@ int change() {
                         }
                     }
                     if (i != ROWS - 1)
-                        fscanf(level, "%c", &test);
+                        fscanf(level, "%c", &reading);
                 }
                 fclose(level);
                 return 2;
@@ -365,20 +366,19 @@ int change() {
                         }
                     }
                     if (i != ROWS - 1)
-                        fscanf(level, "%c", &test);
+                        fscanf(level, "%c", &reading);
                 }
                 fclose(level);
                 return 3;
             case 4:
                 system("cls");
                 int p;
-                printf("Bitte eine Zahl eingeben, zu wieviel Pronzent ein Feld gefuellt werden soll (max 100 min 1): ");
+                
                 do {
+                    printf("Bitte eine Zahl eingeben, zu wieviel Pronzent ein Feld gefuellt werden soll (max 100 min 1): ");
                     scanf("%d", &p);
+                    system("cls");
                     fgetc(stdin) != '\n';
-                    if (p < 1 || p > 100) {
-                        printf("Bitte eine gueltige Zahl eingeben: ");
-                    }
                 } while (p < 1 || p > 100);
 
                 // Setuo fuer random generator
@@ -406,14 +406,12 @@ int generations() {
     system("cls");
 
     int i = 0;
-    printf("Bitte eine Zahl fuer die Generationen eingeben (0 ist ungueltig): ");
     do {
+        printf("Bitte eine Zahl fuer die Generationen eingeben (0 ist ungueltig): ");
         scanf("%d", &i);
+        system("cls");
         fgetc(stdin) != '\n';
-        if (i < 0) {
-            printf("Bitte eine gueltige Zahl eingeben: ");
-        }
-    } while (i < 1);
+    } while (i < 1 && i < INT_MAX); // max integer abfangen
 
     return i;
 }
@@ -423,7 +421,8 @@ int stepByStep() {
     printf("Willst du das Game Schrittweise ablaufen lassen?\n");
     printf("Ja   Nein");
 
-    x = 0; y = 1;
+    x = 0; 
+    y = 1;
 
     goToXY(x, y);
     do {
@@ -467,7 +466,7 @@ void start(int durchlaufe) {
 
     system("cls");
     // Start Feld printen 
-    printf("=================\nGame of Live\n=================\n\n");
+    printf("=================\nGame of Life\n=================\n\n");
     printf("Generation 0:");
     rowBoundary();
     for (int i = 0; i < ROWS; i++) {
@@ -516,12 +515,13 @@ void start(int durchlaufe) {
                 printf("\nBitte Druecke Enter, um mit der naechsten Generation fortzufahren.\n");
             }
             else {
-                printf("\nDu hast erfolgreich %d Generationen durchlebt. Druecke ENTER um fortzufahren.\n", durchlaufe);
+                printf("\nDu hast alle Generationen durchlebt. Druecke ENTER um fortzufahren.\n");
             }
             while (_getch() != 13) {}
         }
     }
 
-    printf("\n\nDruecke ESCAPE, um ins Hauptmenu zurueckzugelangen.");
+    printf("\n\nDu hast erfolgreich %d Generationen durchlebt.\n", durchlaufe);
+    printf("Druecke ESCAPE, um ins Hauptmenu zurueckzugelangen.");
     while (_getch() != 27) {}
 }
