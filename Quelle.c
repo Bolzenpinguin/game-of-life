@@ -74,7 +74,7 @@ int main(int argc, const char* argv[]) {
 
     system("cls");
     do {
-        //Wenn der User aus einem MenÃ¼ kommt, wird der Cursor auf die richtige Position gesetzt und das Menue ausgegeben
+        //Wenn der User aus einem Menü kommt, wird der Cursor auf die richtige Position gesetzt und das Menue ausgegeben
 
         if (ausmenu != 1) {
             system("cls");
@@ -85,7 +85,7 @@ int main(int argc, const char* argv[]) {
         }
         ausmenu = 1;
 
-        //Die Eingabe des Users wird entgegengenommen daraufhin die entsprechende Methode ausgelÃ¶st
+        //Die Eingabe des Users wird entgegengenommen daraufhin die entsprechende Methode ausgelöst
 
         key = getKey();
         switch (key) {
